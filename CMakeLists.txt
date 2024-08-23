@@ -3,17 +3,16 @@
 #
 
 # Set the module name here
-set(MODULE_NAME "mod-discord")
+set(MODULENAME "mod-discord")
 
-# Add the module's source files
-AC_ADD_SCRIPT("${CMAKE_CURRENT_LIST_DIR}/src/DiscordLink.cpp")
-AC_ADD_SCRIPT("${CMAKE_CURRENT_LIST_DIR}/src/loader.cpp")
+# Add source files
+file(GLOB_RECURSE SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-# Add additional dependencies
-AC_ADD_SCRIPT_LOADER("DiscordLink" "${CMAKE_CURRENT_LIST_DIR}/src/loader.cpp")
+AC_ADD_SCRIPT("${SRC_FILES}")
+AC_ADD_SCRIPT_LOADER("DiscordLink" "${CMAKE_CURRENT_SOURCE_DIR}/src/loader.cpp")
 
-# Include the module's configuration directory
-AC_ADD_CONFIG_FILE("${CMAKE_CURRENT_LIST_DIR}/conf/discord_link.conf.dist")
+# Add config file
+AC_ADD_CONFIG_FILE("${CMAKE_CURRENT_SOURCE_DIR}/conf/discord_link.conf.dist")
 
 # Find required packages
 find_package(CURL REQUIRED)
@@ -23,16 +22,25 @@ find_package(jsoncpp REQUIRED)
 message(STATUS "CURL found: ${CURL_FOUND}")
 message(STATUS "JSONCPP found: ${JSONCPP_FOUND}")
 
-# Add include directories and link libraries to the module target
-target_include_directories(${MODULE_NAME}
-  PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CURL_INCLUDE_DIRS}
-    ${JSONCPP_INCLUDE_DIRS}
-)
+# Add include directories and link libraries
+if(CURL_FOUND AND JSONCPP_FOUND)
+    message(STATUS "Building ${MODULENAME}")
 
-target_link_libraries(${MODULE_NAME}
-  PRIVATE
-    ${CURL_LIBRARIES}
-    ${JSONCPP_LIBRARIES}
-)
+    # Need to link against common project libs
+    target_link_libraries(${MODULENAME}
+      PRIVATE
+        acore-core-interface
+        ${CURL_LIBRARIES}
+        ${JSONCPP_LIBRARIES}
+    )
+
+    target_include_directories(${MODULENAME}
+      PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CURL_INCLUDE_DIRS}
+        ${JSONCPP_INCLUDE_DIRS}
+    )
+else()
+    message(WARNING "CURL or JSONCPP not found - ${MODULENAME} module will not be built!")
+    set(SKIP_MODULE ON)
+endif()

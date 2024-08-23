@@ -9,10 +9,10 @@
 #include <sstream>
 #include <algorithm>
 
-class DiscordLink : public WorldScript
+class DiscordLink : public WorldScript, public ChannelScript
 {
 public:
-    DiscordLink() : WorldScript("DiscordLink") 
+    DiscordLink() : WorldScript("DiscordLink"), ChannelScript("DiscordLink") 
     {
         LoadChannelList();
     }
@@ -30,6 +30,14 @@ public:
         if (sConfigMgr->GetOption<bool>("DiscordLink.Enable", false))
         {
             RegisterChannelHooks();
+        }
+    }
+
+    void OnChat(Channel* channel, Player* player, std::string& msg) override
+    {
+        if (std::find(monitoredChannels.begin(), monitoredChannels.end(), channel->GetName()) != monitoredChannels.end())
+        {
+            SendToDiscord(player->GetName(), channel->GetName(), msg);
         }
     }
 
@@ -57,17 +65,9 @@ private:
             {
                 if (Channel* channel = mgr->GetJoinChannel(channelName, 0))
                 {
-                    channel->SetHandler(this);
+                    channel->AddScript(this);
                 }
             }
-        }
-    }
-
-    void OnChat(Channel* channel, Player* player, std::string& msg) override
-    {
-        if (std::find(monitoredChannels.begin(), monitoredChannels.end(), channel->GetName()) != monitoredChannels.end())
-        {
-            SendToDiscord(player->GetName(), channel->GetName(), msg);
         }
     }
 

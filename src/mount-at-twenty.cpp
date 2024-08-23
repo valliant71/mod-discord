@@ -7,6 +7,7 @@
 #include "Item.h"
 #include "ObjectMgr.h"
 #include "DatabaseEnv.h"
+#include "CharacterDatabase.h"
 
 class MountAtTwenty : public PlayerScript
 {
@@ -92,9 +93,13 @@ private:
         if (pos != std::string::npos)
             mailText.replace(pos, 7, std::to_string(player->GetLevel()));
 
+        CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
+        
         MailDraft draft(mailSubject, mailText);
         draft.AddItem(mountItem);
-        draft.SendMailTo(MailReceiver(player), MailSender(MAIL_NORMAL, 0, MAIL_STATIONERY_GM));
+        draft.SendMailTo(trans, MailReceiver(player), MailSender(MAIL_NORMAL, 0, MAIL_STATIONERY_GM), MAIL_CHECK_MASK_NONE, 0);
+
+        CharacterDatabase.CommitTransaction(trans);
     }
 
     uint32 GetDefaultMountEntry(uint8 race)

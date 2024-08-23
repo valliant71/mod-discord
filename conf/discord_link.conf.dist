@@ -1,0 +1,30 @@
+[worldserver]
+
+########################################
+# Discord Link module configuration
+########################################
+#
+#    DiscordLink.Enable
+#        Description: Enable the Discord Link module
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+
+DiscordLink.Enable = 1
+
+#
+#    DiscordLink.WebhookURL
+#        Description: Discord webhook URL for sending messages
+#        Default:     "" - (empty string)
+#
+
+DiscordLink.WebhookURL = ""
+
+#
+#    DiscordLink.Channels
+#        Description: List of in-game channels to be linked to Discord
+#        Default:     "World,General" - (World and General channels)
+#        Note:        Channel names should be separated by commas, without spaces
+#
+
+DiscordLink.Channels = "World,General"

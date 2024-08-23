@@ -1,48 +1,24 @@
-!.gitignore
-
-#
-#Generic
-#
-
-.directory
-.mailmap
-*.orig
-*.rej
-*.*~
-.hg/
-*.kdev*
-.DS_Store
-CMakeLists.txt.user
-*.bak
-*.patch
-*.diff
-*.REMOTE.*
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-
-#
-# IDE & other softwares
-#
-/.settings/
-/.externalToolBuilders/*
-# exclude in all levels
-nbproject/
-.sync.ffs_db
-*.kate-swp
-
-#
-# Eclipse
-#
-*.pydevproject
-.metadata
-.gradle
-tmp/
-*.tmp
+# IDE files
+.vscode/
+.idea/
 *.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.project
-.cproject
+*~
+
+# Build files
+build/
+bin/
+lib/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Module specific
+conf/*.conf
+!conf/*.conf.dist

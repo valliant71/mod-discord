@@ -4,7 +4,7 @@
 #include "Channel.h"
 #include "ChannelMgr.h"
 #include <curl/curl.h>
-#include <json/json.h>
+#include <jsoncpp/json/json.h>
 #include <vector>
 #include <sstream>
 #include <algorithm>

@@ -3,7 +3,7 @@
 #
 
 # Set the module name here
-set(MOD_DISCORD_LINK "mod-discord-link")
+set(MOD_DISCORD_LINK "mod-discord")
 
 # Add the module's source files
 AC_ADD_SCRIPT("${CMAKE_CURRENT_LIST_DIR}/src/DiscordLink.cpp")

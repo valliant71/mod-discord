@@ -16,7 +16,7 @@ public:
     void OnLogin(Player* player) override
     {
         // Check if the player's level is at or above the mount level
-        if (player->getLevel() >= GetMountLevel())
+        if (player->GetLevel() >= GetMountLevel())
         {
             // Check if the player already has riding skill
             if (!player->HasSpell(33388))
@@ -36,7 +36,7 @@ public:
         uint32 mountLevel = GetMountLevel();
 
         // Check if the player has reached the required level
-        if (oldLevel < mountLevel && player->getLevel() >= mountLevel)
+        if (oldLevel < mountLevel && player->GetLevel() >= mountLevel)
         {
             GrantMountAndSkill(player);
         }
@@ -90,7 +90,7 @@ private:
         // Replace {level} in the mail text with the actual level
         size_t pos = mailText.find("{level}");
         if (pos != std::string::npos)
-            mailText.replace(pos, 7, std::to_string(player->getLevel()));
+            mailText.replace(pos, 7, std::to_string(player->GetLevel()));
 
         MailDraft draft(mailSubject, mailText);
         draft.AddItem(mountItem);
